@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090b12">
+<title>Meme Ascender</title>
+<style>
+:root{
+  --bg:#07090f;--panel:#111522;--panel2:#171c2b;--line:#343b54;
+  --text:#f0f3ff;--muted:#8e98b8;--accent:#9cff57;--hot:#ff67d4;
+  --blue:#67d9ff;--gold:#ffd76a;--shadow:#000a;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:"Courier New",ui-monospace,monospace}
+body{
+  min-height:100dvh;overflow-x:hidden;
+  background:
+    radial-gradient(circle at 15% 0%,#17203b 0,transparent 34rem),
+    radial-gradient(circle at 90% 25%,#28162d 0,transparent 30rem),
+    linear-gradient(#080a11,#05060a);
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:100;
+  background:repeating-linear-gradient(0deg,#0000 0 3px,#0003 4px);
+  mix-blend-mode:multiply;opacity:.38
+}
+body:after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:101;
+  box-shadow:inset 0 0 100px #000c
+}
+button{font:inherit;color:inherit}
+#boot{
+  position:fixed;inset:0;z-index:999;background:#05070a;color:#a8ff84;
+  display:grid;place-items:center;padding:28px;transition:.5s
+}
+.bootbox{width:min(560px,100%);line-height:1.7;font-size:13px}
+.bootbar{height:12px;border:1px solid #6b8f5b;margin-top:14px;padding:2px}
+.bootfill{height:100%;width:0;background:#9cff57;animation:boot 1.2s steps(12) forwards}
+@keyframes boot{to{width:100%}}
+.shell{width:min(1180px,100%);margin:auto;padding:16px 16px calc(78px + env(safe-area-inset-bottom))}
+.topbar{
+  display:flex;gap:10px;align-items:center;justify-content:space-between;
+  margin-bottom:12px;padding:10px 12px;border:1px solid var(--line);
+  background:#0b0e17cc;box-shadow:0 14px 50px #0008;backdrop-filter:blur(12px)
+}
+.brand{display:flex;align-items:center;gap:9px;font-weight:900;letter-spacing:-1px}
+.pixel{width:12px;height:12px;background:var(--accent);box-shadow:12px 0 var(--hot),0 12px var(--blue),12px 12px var(--gold)}
+.status{font-size:11px;color:var(--muted);text-align:right}
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(310px,.75fr);gap:12px}
+.window{
+  border:1px solid var(--line);background:linear-gradient(180deg,#131827ee,#0d111dee);
+  box-shadow:0 20px 70px #0007;overflow:hidden;min-width:0
+}
+.titlebar{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:8px 10px;border-bottom:1px solid var(--line);
+  background:linear-gradient(90deg,#202741,#161a2a);font-size:12px;font-weight:900
+}
+.dots{display:flex;gap:5px}.dot{width:9px;height:9px;border:1px solid #6e7898;background:#313950}
+.content{padding:15px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.stat{
+  min-width:0;padding:10px;background:#0a0d16;border:1px solid #2a3147;
+  box-shadow:inset 0 0 0 1px #000
+}
+.stat b{display:block;font-size:clamp(15px,3vw,22px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat span{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
+.stage{
+  position:relative;min-height:440px;border:1px solid #283048;overflow:hidden;
+  background:
+    linear-gradient(#ffffff08 1px,transparent 1px),
+    linear-gradient(90deg,#ffffff08 1px,transparent 1px),
+    radial-gradient(circle at 50% 50%,#243151 0,#111728 38%,#090c15 75%);
+  background-size:28px 28px,28px 28px,auto;
+  display:grid;place-items:center;padding:22px
+}
+.stage:before{
+  content:"MEME_OS // BUILD 2004.09";position:absolute;left:10px;top:8px;
+  color:#65708e;font-size:9px;letter-spacing:1px
+}
+.orbit{position:absolute;width:360px;height:360px;border:1px dashed #405074;border-radius:50%;animation:spin 18s linear infinite;opacity:.55}
+.orbit:before,.orbit:after{content:"";position:absolute;width:9px;height:9px;background:var(--blue);box-shadow:0 0 16px var(--blue)}
+.orbit:before{left:30px;top:54px}.orbit:after{right:42px;bottom:37px;background:var(--hot);box-shadow:0 0 16px var(--hot)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.memeCore{
+  position:relative;width:min(300px,78vw);aspect-ratio:1;border:1px solid #56617d;
+  background:linear-gradient(145deg,#1a2034,#0c101c);
+  box-shadow:0 24px 80px #000b,inset 0 0 45px #91ff6b0a;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  transform:rotate(-1deg)
+}
+.face{font-size:clamp(48px,12vw,80px);line-height:1;filter:drop-shadow(5px 6px 0 #0008);user-select:none}
+.caption{
+  width:88%;padding:8px;border-top:1px solid #39415b;border-bottom:1px solid #39415b;
+  text-align:center;font-weight:900;text-transform:uppercase;font-size:clamp(12px,3.1vw,17px);
+  min-height:52px;display:grid;place-items:center
+}
+.post{
+  position:relative;margin-top:4px;border:1px solid #a8ff78;background:#182416;color:#cfffac;
+  padding:13px 22px;font-weight:900;cursor:pointer;box-shadow:4px 4px 0 #071007;
+  text-transform:uppercase;letter-spacing:1px;touch-action:manipulation
+}
+.post:active{transform:translate(3px,3px);box-shadow:1px 1px 0 #071007}
+.float{
+  position:fixed;z-index:50;font-size:13px;font-weight:900;color:var(--accent);
+  pointer-events:none;text-shadow:2px 2px #000;animation:float .85s ease-out forwards
+}
+@keyframes float{to{transform:translateY(-70px) scale(1.2);opacity:0}}
+.ticker{
+  height:31px;display:flex;align-items:center;overflow:hidden;border-top:1px solid #283048;
+  background:#080b12;color:#7d88a7;font-size:10px;white-space:nowrap
+}
+.ticker span{display:inline-block;padding-left:100%;animation:ticker 22s linear infinite}
+@keyframes ticker{to{transform:translateX(-100%)}}
+.sectionTitle{font-size:10px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);margin:2px 0 9px}
+.upgrades{display:grid;gap:7px;max-height:482px;overflow:auto;padding-right:3px}
+.up{
+  width:100%;text-align:left;border:1px solid #303852;background:#0c101b;padding:10px;
+  cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:5px 10px
+}
+.up:hover{background:#121827}.up:active{transform:translateY(1px)}
+.up.locked{opacity:.42;filter:grayscale(.5)}
+.up .name{font-weight:900;font-size:12px}
+.up .desc{font-size:9px;color:var(--muted);line-height:1.35}
+.up .cost{font-size:11px;color:var(--gold);font-weight:900}
+.up .lvl{font-size:9px;color:var(--blue);text-align:right}
+.eraCard{
+  margin-top:12px;padding:12px;border:1px solid #3a3453;
+  background:linear-gradient(135deg,#141126,#0e111b)
+}
+.eraHead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.eraName{font-weight:900;color:#dab7ff}.small{font-size:9px;color:var(--muted);line-height:1.45}
+.progress{height:7px;background:#070910;border:1px solid #2f3750;margin:9px 0}
+.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--hot),var(--blue));transition:.25s}
+.ascend{
+  width:100%;border:1px solid #755c9d;background:#211935;padding:10px;margin-top:8px;
+  font-weight:900;cursor:pointer
+}
+.ascend.ready{border-color:#d99cff;box-shadow:inset 0 0 25px #a557ff22;color:#f0ceff}
+.ascend:disabled{opacity:.38;cursor:not-allowed}
+.archive{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:9px}
+.card{aspect-ratio:1;border:1px solid #303852;background:#090c15;display:grid;place-items:center;text-align:center;padding:4px;font-size:9px;color:#6e7898}
+.card.unlocked{color:#d7def7;background:linear-gradient(145deg,#161d31,#0c101b);box-shadow:inset 0 0 18px #72d7ff0d}
+.card strong{display:block;font-size:19px;margin-bottom:3px}
+.footerTip{margin-top:10px;font-size:9px;color:#68738f;text-align:center}
+.taskbar{
+  position:fixed;z-index:90;left:0;right:0;bottom:0;height:calc(58px + env(safe-area-inset-bottom));
+  padding:8px 12px calc(8px + env(safe-area-inset-bottom));
+  background:#090c14e8;border-top:1px solid #313950;backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;gap:8px
+}
+.start{border:1px solid #48516d;background:#151b2a;padding:7px 11px;font-weight:900}
+.clock{font-size:10px;color:#8993ad;text-align:right}
+.toast{
+  position:fixed;z-index:200;left:50%;bottom:82px;transform:translateX(-50%) translateY(20px);
+  width:min(92vw,420px);padding:10px 12px;border:1px solid #56617d;background:#101522ef;
+  opacity:0;pointer-events:none;transition:.25s;font-size:11px;box-shadow:0 12px 40px #000b
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.flash{animation:flash .18s}@keyframes flash{50%{filter:brightness(1.45)}}
+@media(max-width:820px){
+  .shell{padding:8px 8px calc(72px + env(safe-area-inset-bottom))}
+  .grid{grid-template-columns:1fr}
+  .topbar{margin-bottom:8px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stage{min-height:385px}
+  .orbit{width:290px;height:290px}
+  .upgrades{max-height:none}
+}
+@media(max-width:430px){
+  .brand{font-size:13px}.status{font-size:9px}
+  .content{padding:10px}.stage{padding:14px;min-height:365px}
+  .memeCore{width:min(270px,82vw)}
+}
+</style>
+</head>
+<body>
+<div id="boot">
+  <div class="bootbox">
+    MEME_ASCENDER BIOS v0.9<br>
+    Checking dial-up modem........ OK<br>
+    Mounting /internet/archive.... OK<br>
+    Loading questionable humor.... OK
+    <div class="bootbar"><div class="bootfill"></div></div>
+  </div>
+</div>
+
+<main class="shell">
+  <div class="topbar">
+    <div class="brand"><div class="pixel"></div><span>MEME ASCENDER</span></div>
+    <div class="status"><span id="eraTop">DIAL-UP BASEMENT</span><br><span id="saveText">AUTO-SAVE: READY</span></div>
+  </div>
+
+  <div class="grid">
+    <section class="window">
+      <div class="titlebar"><span>meme_generator.exe</span><div class="dots"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div></div>
+      <div class="content">
+        <div class="stats">
+          <div class="stat"><b id="memes">0</b><span>meme bytes</span></div>
+          <div class="stat"><b id="mps">0/s</b><span>passive upload</span></div>
+          <div class="stat"><b id="power">1x</b><span>post power</span></div>
+          <div class="stat"><b id="nostalgia">0</b><span>nostalgia</span></div>
+        </div>
+
+        <div class="stage" id="stage">
+          <div class="orbit"></div>
+          <div class="memeCore" id="core">
+            <div class="face" id="face">[°_°]</div>
+            <div class="caption" id="caption">WHEN THE WIFI CONNECTS ON THE FIRST TRY</div>
+            <button class="post" id="postBtn">POST MEME</button>
+          </div>
+        </div>
+        <div class="ticker"><span id="ticker">WELCOME TO THE OLD INTERNET // NO ALGORITHM // JUST VIBES // CLICK POST MEME TO BEGIN //</span></div>
+      </div>
+    </section>
+
+    <aside class="window">
+      <div class="titlebar"><span>upgrade_manager.dll</span><div class="dots"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div></div>
+      <div class="content">
+        <div class="sectionTitle">hardware + internet nonsense</div>
+        <div class="upgrades" id="upgrades"></div>
+
+        <div class="eraCard">
+          <div class="eraHead"><div><div class="sectionTitle">current era</div><div class="eraName" id="eraName">Dial-Up Basement</div></div><div id="eraYear">2004</div></div>
+          <div class="small" id="eraDesc">The web is slow, weird, and somehow perfect.</div>
+          <div class="progress"><i id="eraProgress"></i></div>
+          <div class="small" id="eraGoal">Earn 800 run bytes to unlock the next era.</div>
+          <button class="ascend" id="ascendBtn" disabled>ASCEND INTERNET ERA</button>
+        </div>
+
+        <div class="sectionTitle" style="margin-top:14px">meme archive</div>
+        <div class="archive" id="archive"></div>
+        <div class="footerTip">Progress saves locally on this device every few seconds.</div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div class="taskbar">
+  <button class="start" id="startBtn">[ START ]</button>
+  <div class="clock"><span id="clock">--:--</span><br>MEME_OS ONLINE</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var SAVE_KEY = "memeAscenderSaveV1";
+
+  var eras = [
+    {name:"Dial-Up Basement",year:"2004",goal:800,mult:1,face:"[°_°]",desc:"The web is slow, weird, and somehow perfect.",color:"#9cff57"},
+    {name:"Forum Gold",year:"2008",goal:8500,mult:1.8,face:"(>_<)",desc:"Signatures are huge. Avatars are tiny. Drama is eternal.",color:"#67d9ff"},
+    {name:"Reaction Renaissance",year:"2012",goal:90000,mult:3.2,face:"{ಠ_ಠ}",desc:"Every emotion now has a reusable image.",color:"#ff67d4"},
+    {name:"Loop Video Summer",year:"2016",goal:950000,mult:5.8,face:"[8_8]",desc:"Six seconds is enough time to change culture.",color:"#ffd76a"},
+    {name:"Algorithm Age",year:"2020",goal:9000000,mult:10.5,face:"<o_o>",desc:"The feed knows what you want before you do.",color:"#b08cff"},
+    {name:"Post-Ironic Future",year:"2026",goal:null,mult:20,face:"[?_?]",desc:"Context is optional. Lore is mandatory.",color:"#ffffff"}
+  ];
+
+  var captions = [
+    ["WHEN THE WIFI CONNECTS ON THE FIRST TRY","ME OPENING THE INTERNET AFTER 9PM","DOWNLOAD ESTIMATE: 37 YEARS","MOM PICKED UP THE PHONE // GAME OVER"],
+    ["BRO SIGNED HIS POST WITH A 900PX BANNER","MODS ARE ASLEEP // POST THE FROGS","SOURCE: TRUST ME BRO DOT ZIP","YOU HAVE 14 NEW FORUM NOTIFICATIONS"],
+    ["THAT FACE WHEN THE GROUP CHAT GOES SILENT","ME EXPLAINING THE JOKE FOR 8 MINUTES","LIVE REACTION JUST DROPPED","ONE DOES NOT SIMPLY CLOSE 43 TABS"],
+    ["DO IT FOR THE SIX SECOND LOOP","PHONE STORAGE: 99% SHORT VIDEOS","THE LOOP WAS PERFECT AND YOU KNOW IT","CAMERA ROLL ARCHAEOLOGY"],
+    ["THE ALGORITHM HAS CHOSEN YOU","I WATCHED ONE VIDEO. NOW THIS IS MY LIFE.","SKIP AD IN 5... 4...","POV: YOUR FEED LEARNS A NEW WORD"],
+    ["THIS MEME REQUIRES THREE HOURS OF LORE","NO CONTEXT. MAXIMUM IMPACT.","IRONY LEVEL: UNRECOVERABLE","ARCHAEOLOGISTS WILL HATE THIS POST"]
+  ];
+
+  var upgrades = [
+    {id:"sig",name:"Forum Signature",desc:"+1 base post power.",base:15,scale:1.18,era:0,click:1,mps:0},
+    {id:"folder",name:"Reaction Folder",desc:"+0.8 bytes/sec. 600 images, zero organization.",base:55,scale:1.20,era:0,click:0,mps:.8},
+    {id:"router",name:"Suspicious Router",desc:"+3 base post power.",base:140,scale:1.22,era:0,click:3,mps:0},
+    {id:"reposter",name:"Auto Reposter",desc:"+4 bytes/sec while you stare at the screen.",base:430,scale:1.23,era:1,click:0,mps:4},
+    {id:"compiler",name:"Meme Compiler",desc:"+12 base post power.",base:1150,scale:1.24,era:1,click:12,mps:0},
+    {id:"server",name:"Basement Server Rack",desc:"+22 bytes/sec. Definitely not overheating.",base:3600,scale:1.25,era:2,click:0,mps:22},
+    {id:"loop",name:"Perfect Loop Engine",desc:"+65 base post power.",base:12000,scale:1.26,era:3,click:65,mps:0},
+    {id:"algo",name:"Algorithm Whisperer",desc:"+180 bytes/sec. The feed obeys.",base:48000,scale:1.27,era:4,click:0,mps:180},
+    {id:"quantum",name:"Quantum Punchline",desc:"+520 base post power. Joke lands before posting.",base:175000,scale:1.28,era:5,click:520,mps:0}
+  ];
+
+  var collectibles = [
+    {era:0,symbol:"404",name:"Lost Page"},
+    {era:1,symbol:"SIG",name:"Glitter Sig"},
+    {era:2,symbol:"LOL",name:"Reaction Pack"},
+    {era:3,symbol:"6S",name:"Perfect Loop"},
+    {era:4,symbol:"FYP",name:"Feed Relic"},
+    {era:5,symbol:"???",name:"Future Meme"}
+  ];
+
+  var state = {
+    memes:0, runEarned:0, lifetime:0, era:0, nostalgia:0,
+    levels:{}, archive:[true,false,false,false,false,false],
+    clicks:0, lastSeen:Date.now()
+  };
+
+  function load(){
+    try{
+      var raw = localStorage.getItem(SAVE_KEY);
+      if(!raw) return;
+      var saved = JSON.parse(raw);
+      if(saved && typeof saved === "object"){
+        Object.assign(state,saved);
+        state.levels = saved.levels || {};
+        state.archive = saved.archive || [true,false,false,false,false,false];
+      }
+      var away = Math.min((Date.now()-(state.lastSeen||Date.now()))/1000,60*60*8);
+      var gain = totalMps()*away*.35;
+      if(gain>1){
+        state.memes += gain; state.runEarned += gain; state.lifetime += gain;
+        setTimeout(function(){notify("WELCOME BACK // archived "+fmt(gain)+" bytes while you were away");},1500);
+      }
+    }catch(e){}
+  }
+
+  function save(){
+    state.lastSeen=Date.now();
+    try{
+      localStorage.setItem(SAVE_KEY,JSON.stringify(state));
+      var el=document.getElementById("saveText");
+      el.textContent="AUTO-SAVE: "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+      setTimeout(function(){el.textContent="AUTO-SAVE: READY";},800);
+    }catch(e){}
+  }
+
+  function fmt(n){
+    n=Math.max(0,n||0);
+    if(n<1000) return Math.floor(n).toLocaleString();
+    var units=["K","M","B","T","Q"];
+    var v=n, i=-1;
+    while(v>=1000 && i<units.length-1){v/=1000;i++;}
+    return (v>=100?Math.floor(v):v>=10?v.toFixed(1):v.toFixed(2))+units[i];
+  }
+
+  function level(id){return state.levels[id]||0}
+  function cost(u){return Math.floor(u.base*Math.pow(u.scale,level(u.id)))}
+  function nostalgiaMult(){return 1+(state.nostalgia*.15)}
+  function baseClick(){
+    var v=1;
+    upgrades.forEach(function(u){v+=u.click*level(u.id)});
+    return v;
+  }
+  function baseMps(){
+    var v=0;
+    upgrades.forEach(function(u){v+=u.mps*level(u.id)});
+    return v;
+  }
+  function totalClick(){return baseClick()*eras[state.era].mult*nostalgiaMult()}
+  function totalMps(){return baseMps()*eras[state.era].mult*nostalgiaMult()}
+
+  function renderUpgrades(){
+    var wrap=document.getElementById("upgrades");
+    wrap.innerHTML="";
+    upgrades.forEach(function(u){
+      var locked=state.era<u.era;
+      var c=cost(u);
+      var b=document.createElement("button");
+      b.className="up"+(locked?" locked":"");
+      b.disabled=locked;
+      b.innerHTML='<div><div class="name">'+u.name+'</div><div class="desc">'+(locked?"UNLOCKS IN "+eras[u.era].name.toUpperCase():u.desc)+'</div></div>'+
+                  '<div><div class="cost">'+(locked?"LOCKED":fmt(c)+" B")+'</div><div class="lvl">LVL '+level(u.id)+'</div></div>';
+      b.addEventListener("click",function(){buy(u);});
+      wrap.appendChild(b);
+    });
+  }
+
+  function buy(u){
+    var c=cost(u);
+    if(state.memes<c){notify("NOT ENOUGH MEME BYTES // need "+fmt(c-state.memes)+" more");return;}
+    state.memes-=c;
+    state.levels[u.id]=level(u.id)+1;
+    notify("UPGRADED // "+u.name+" lvl "+state.levels[u.id]);
+    render();
+    save();
+  }
+
+  function postMeme(ev){
+    var gain=totalClick();
+    state.memes+=gain;state.runEarned+=gain;state.lifetime+=gain;state.clicks++;
+    if(navigator.vibrate) navigator.vibrate(7);
+    var capList=captions[state.era];
+    if(state.clicks%3===0) document.getElementById("caption").textContent=capList[Math.floor(Math.random()*capList.length)];
+    if(state.clicks%19===0){
+      state.archive[state.era]=true;
+      notify("ARCHIVE DROP // "+collectibles[state.era].name+" recovered");
+    }
+    spawnFloat(ev,gain);
+    var core=document.getElementById("core");
+    core.classList.remove("flash");void core.offsetWidth;core.classList.add("flash");
+    render();
+  }
+
+  function spawnFloat(ev,gain){
+    var f=document.createElement("div");
+    f.className="float";f.textContent="+"+fmt(gain);
+    var x=innerWidth/2,y=innerHeight/2;
+    if(ev && ev.clientX){x=ev.clientX;y=ev.clientY;}
+    f.style.left=(x-10)+"px";f.style.top=(y-10)+"px";
+    document.body.appendChild(f);
+    setTimeout(function(){f.remove();},900);
+  }
+
+  function ascend(){
+    var era=eras[state.era];
+    if(!era.goal || state.runEarned<era.goal) return;
+    var next=state.era+1;
+    var bonus=Math.max(1,Math.floor(Math.sqrt(state.runEarned/era.goal)));
+    state.nostalgia+=bonus;
+    state.era=next;
+    state.memes=0;
+    state.runEarned=0;
+    state.levels={};
+    state.archive[next]=true;
+    notify("ERA ASCENDED // +"+bonus+" nostalgia // "+eras[next].name+" unlocked");
+    render();
+    save();
+  }
+
+  function renderArchive(){
+    var wrap=document.getElementById("archive");wrap.innerHTML="";
+    collectibles.forEach(function(c,i){
+      var open=!!state.archive[i];
+      var d=document.createElement("div");
+      d.className="card"+(open?" unlocked":"");
+      d.innerHTML=open?("<div><strong>"+c.symbol+"</strong>"+c.name+"</div>"):"<div><strong>???</strong>LOCKED</div>";
+      wrap.appendChild(d);
+    });
+  }
+
+  function render(){
+    var e=eras[state.era];
+    document.documentElement.style.setProperty("--accent",e.color);
+    document.getElementById("memes").textContent=fmt(state.memes);
+    document.getElementById("mps").textContent=fmt(totalMps())+"/s";
+    document.getElementById("power").textContent=fmt(totalClick())+"x";
+    document.getElementById("nostalgia").textContent=fmt(state.nostalgia);
+    document.getElementById("eraName").textContent=e.name;
+    document.getElementById("eraTop").textContent=e.name.toUpperCase();
+    document.getElementById("eraYear").textContent=e.year;
+    document.getElementById("eraDesc").textContent=e.desc;
+    document.getElementById("face").textContent=e.face;
+    var btn=document.getElementById("ascendBtn");
+    var p=100;
+    if(e.goal){
+      p=Math.min(100,(state.runEarned/e.goal)*100);
+      document.getElementById("eraGoal").textContent="Earn "+fmt(e.goal)+" run bytes to unlock "+eras[state.era+1].name+".";
+      btn.disabled=state.runEarned<e.goal;
+      btn.textContent=btn.disabled?"ASCEND AT "+fmt(e.goal)+" B":"ASCEND TO "+eras[state.era+1].name.toUpperCase();
+      btn.classList.toggle("ready",!btn.disabled);
+    }else{
+      document.getElementById("eraGoal").textContent="Final era reached. Build the most cursed archive possible.";
+      btn.disabled=true;btn.textContent="MAX ERA REACHED";btn.classList.remove("ready");
+    }
+    document.getElementById("eraProgress").style.width=p+"%";
+    renderUpgrades();
+    renderArchive();
+  }
+
+  function notify(msg){
+    var t=document.getElementById("toast");
+    t.textContent=msg;t.classList.add("show");
+    clearTimeout(notify.timer);
+    notify.timer=setTimeout(function(){t.classList.remove("show");},2400);
+  }
+
+  function updateClock(){
+    document.getElementById("clock").textContent=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+  }
+
+  document.getElementById("postBtn").addEventListener("click",postMeme);
+  document.getElementById("ascendBtn").addEventListener("click",ascend);
+  document.getElementById("startBtn").addEventListener("click",function(){
+    notify("MEME_ASCENDER // "+fmt(state.lifetime)+" lifetime bytes // "+state.clicks+" manual posts");
+  });
+
+  load();
+  render();
+  updateClock();
+  setInterval(updateClock,1000);
+  setInterval(function(){
+    var gain=totalMps()/10;
+    if(gain>0){state.memes+=gain;state.runEarned+=gain;state.lifetime+=gain;}
+    render();
+  },100);
+  setInterval(save,5000);
+
+  setTimeout(function(){
+    var boot=document.getElementById("boot");
+    boot.style.opacity="0";
+    setTimeout(function(){boot.remove();},520);
+  },1350);
+})();
+</script>
+</body>
+</html>
