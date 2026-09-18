@@ -427,31 +427,39 @@ button{font:inherit;color:inherit}
     });
   }
 
-  function render(){
+  function renderLive(){
     var e=eras[state.era];
-    document.documentElement.style.setProperty("--accent",e.color);
     document.getElementById("memes").textContent=fmt(state.memes);
     document.getElementById("mps").textContent=fmt(totalMps())+"/s";
     document.getElementById("power").textContent=fmt(totalClick())+"x";
     document.getElementById("nostalgia").textContent=fmt(state.nostalgia);
+    var btn=document.getElementById("ascendBtn");
+    var p=100;
+    if(e.goal){
+      p=Math.min(100,(state.runEarned/e.goal)*100);
+      btn.disabled=state.runEarned<e.goal;
+      btn.textContent=btn.disabled?"ASCEND AT "+fmt(e.goal)+" B":"ASCEND TO "+eras[state.era+1].name.toUpperCase();
+      btn.classList.toggle("ready",!btn.disabled);
+    }else{
+      btn.disabled=true;btn.textContent="MAX ERA REACHED";btn.classList.remove("ready");
+    }
+    document.getElementById("eraProgress").style.width=p+"%";
+  }
+
+  function render(){
+    var e=eras[state.era];
+    document.documentElement.style.setProperty("--accent",e.color);
     document.getElementById("eraName").textContent=e.name;
     document.getElementById("eraTop").textContent=e.name.toUpperCase();
     document.getElementById("eraYear").textContent=e.year;
     document.getElementById("eraDesc").textContent=e.desc;
     document.getElementById("face").textContent=e.face;
-    var btn=document.getElementById("ascendBtn");
-    var p=100;
     if(e.goal){
-      p=Math.min(100,(state.runEarned/e.goal)*100);
       document.getElementById("eraGoal").textContent="Earn "+fmt(e.goal)+" run bytes to unlock "+eras[state.era+1].name+".";
-      btn.disabled=state.runEarned<e.goal;
-      btn.textContent=btn.disabled?"ASCEND AT "+fmt(e.goal)+" B":"ASCEND TO "+eras[state.era+1].name.toUpperCase();
-      btn.classList.toggle("ready",!btn.disabled);
     }else{
       document.getElementById("eraGoal").textContent="Final era reached. Build the most cursed archive possible.";
-      btn.disabled=true;btn.textContent="MAX ERA REACHED";btn.classList.remove("ready");
     }
-    document.getElementById("eraProgress").style.width=p+"%";
+    renderLive();
     renderUpgrades();
     renderArchive();
   }
