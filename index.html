@@ -488,7 +488,7 @@ button{font:inherit;color:inherit}
   setInterval(function(){
     var gain=totalMps()/10;
     if(gain>0){state.memes+=gain;state.runEarned+=gain;state.lifetime+=gain;}
-    render();
+    renderLive();
   },100);
   setInterval(save,5000);
 
